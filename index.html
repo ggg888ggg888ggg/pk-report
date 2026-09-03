@@ -5,37 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>PK赛实时通报</title>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif; background: #f0f2f5; color: #333; }
-.header { background: linear-gradient(135deg, #1a4b8c 0%, #2563eb 50%, #3b82f6 100%); color: white; padding: 20px 16px; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,0.15); }
-.header h1 { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
-.header .update-time { font-size: 12px; opacity: 0.8; }
-.header .status { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; background: rgba(255,255,255,0.2); padding: 2px 10px; border-radius: 10px; margin-top: 6px; }
-.status-dot { width: 6px; height: 6px; border-radius: 50%; background: #4ade80; animation: pulse 2s infinite; }
-@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; min-height: 100vh; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif; }
 .loading { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; gap: 16px; }
 .spinner { width: 40px; height: 40px; border: 4px solid #e5e7eb; border-top-color: #3b82f6; border-radius: 50%; animation: spin 1s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .loading-text { color: #9ca3af; font-size: 14px; }
-.report-content { padding: 12px; }
-.report-content table { width: 100% !important; }
 .error-card { margin: 20px 16px; background: white; border-radius: 12px; padding: 24px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
 .error-card p { color: #6b7280; font-size: 14px; line-height: 1.6; }
 .retry-btn { margin-top: 16px; background: #3b82f6; color: white; border: none; padding: 8px 24px; border-radius: 8px; font-size: 14px; cursor: pointer; }
 .retry-btn:active { background: #2563eb; }
-.footer { text-align: center; padding: 16px; font-size: 11px; color: #9ca3af; }
 </style>
 </head>
 <body>
-<div class="header">
-<h1>PK赛实时通报</h1>
-<div class="update-time" id="updateTime">loading...</div>
-<div class="status" id="statusBadge">
-<span class="status-dot"></span>
-<span id="statusText">real-time updating</span>
-</div>
-</div>
-
 <div id="mainContent">
 <div class="loading">
 <div class="spinner"></div>
@@ -43,11 +26,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft
 </div>
 </div>
 
-<div class="footer">Powered by GitHub Pages · 数据每小时自动更新</div>
-
 <script>
-// data.json 与 index.html 同目录，GitHub Pages 直接提供静态文件
-// 加 ?t= 时间戳防止缓存
 var DATA_URL = './data.json';
 
 function loadReport() {
@@ -55,24 +34,13 @@ function loadReport() {
         .then(function(resp) { return resp.json(); })
         .then(function(data) {
             if (data.html) {
-                document.getElementById('updateTime').textContent = '\u66f4\u65b0\u65f6\u95f4\uff1a' + (data.updateTime || '');
-                document.getElementById('statusText').textContent = '\u6570\u636e\u5df2\u66f4\u65b0';
+                // 直接替换整个页面内容为通报HTML（通报HTML本身是完整页面）
+                document.open();
+                document.write(data.html);
+                document.close();
 
-                var mc = document.getElementById('mainContent');
-                mc.innerHTML = '<div class="report-content"><div id="reportHtml"></div></div>';
-                document.getElementById('reportHtml').innerHTML = data.html;
-
-                // execute embedded scripts
-                var scripts = document.getElementById('reportHtml').querySelectorAll('script');
-                scripts.forEach(function(oldScript) {
-                    var newScript = document.createElement('script');
-                    if (oldScript.src) {
-                        newScript.src = oldScript.src;
-                    } else {
-                        newScript.textContent = oldScript.textContent;
-                    }
-                    oldScript.parentNode.replaceChild(newScript, oldScript);
-                });
+                // 5分钟后自动刷新
+                setTimeout(function() { location.reload(); }, 5 * 60 * 1000);
             } else {
                 showNoData();
             }
@@ -92,7 +60,6 @@ function showError(msg) {
 }
 
 loadReport();
-setInterval(loadReport, 5 * 60 * 1000);
 </script>
 </body>
 </html>
