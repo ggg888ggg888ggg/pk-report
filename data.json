@@ -1,0 +1,6 @@
+{
+    "html":  "\u003cdiv style=\u0027padding:16px;background:#fff;border-radius:12px\u0027\u003e\u003ch2 style=\u0027margin-bottom:12px\u0027\u003ePK赛实时通报测试\u003c/h2\u003e\u003ctable border=\u00271\u0027 cellpadding=\u00278\u0027 style=\u0027border-collapse:collapse;width:100%\u0027\u003e\u003ctr style=\u0027background:#f0f7ff\u0027\u003e\u003cth\u003e门店\u003c/th\u003e\u003cth\u003e移动\u003c/th\u003e\u003cth\u003e宽带\u003c/th\u003e\u003cth\u003e高清\u003c/th\u003e\u003c/tr\u003e\u003ctr\u003e\u003ctd\u003e东风\u003c/td\u003e\u003ctd\u003e29\u003c/td\u003e\u003ctd\u003e2\u003c/td\u003e\u003ctd\u003e2\u003c/td\u003e\u003c/tr\u003e\u003ctr\u003e\u003ctd\u003e让胡路\u003c/td\u003e\u003ctd\u003e19\u003c/td\u003e\u003ctd\u003e1\u003c/td\u003e\u003ctd\u003e1\u003c/td\u003e\u003c/tr\u003e\u003c/table\u003e\u003cp style=\u0027color:#666;font-size:12px;margin-top:8px\u0027\u003e此为链路测试数据\u003c/p\u003e\u003c/div\u003e",
+    "timestamp":  "1725348000",
+    "title":  "PK赛实时通报",
+    "updateTime":  "2026-09-03 13:05"
+}
